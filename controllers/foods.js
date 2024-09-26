@@ -15,8 +15,11 @@ router.get('/', (req, res) => {
 
 router.get('/users/:userId/foods', (req, res) => {
     User.findById(req.params.userId, (err, user) => {
-        if (err) return res.status(500).send(err);
-        res.render('pantry', { pantry: user.pantry});
+        if (err) {
+            console.log(err);
+            return res.redirect('/');
+        }
+        res.render('foods/index.ejs', { pantry: user.pantry });
     });
 });
 
@@ -24,6 +27,23 @@ router.get('/pantry', (req, res) => {
     User.findById(req.user._id, (err, user) => {
         if (err) return res.status(500).send(err);
         res.render('pantry', { pantry: user.pantry });
+    });
+});
+
+router.post('/users/:userId/foods', (req, res) => {
+    User.findById(req.params.userId, (err, user) => {
+        if (err) {
+            console.log(err);
+            return res.redirect('/');
+        }
+        user.pantry.push(req.body);
+        user.save((err) => {
+            if (err) {
+                console.log(err);
+                return res.redirect('/');
+            }
+            res.redirect('/');
+        });
     });
 });
 

@@ -8,11 +8,15 @@
 <body>
   <%- include('../partials/nav') %> 
   <h1>Welcome to my Pantry</h1>
-  <ul>
-    <% pantry.forEach(item => { %>
-      <li><%= item.name %> - <%= item.quantity %> - <%= item.expirationDate %></li>
-    <% }) %>
-  </ul>
+  <% if (pantry.length > 0) { %>
+    <ul>
+      <% pantry.forEach(item => { %>
+        <li><%= item.name %> - <%= item.quantity %> - <%= item.expirationDate %></li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>There are no items in this pantry.</p>
+  <% } %>
   <a href="/users/<%= user._id %>/foods/new">Add New Item</a>
 </body>
 </html>
