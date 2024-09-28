@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
+const pantrySchema = new mongoose.Schema({
+  name: String,
+  quantity: Number,
+  expirationDate: Date
+});
+
+const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -9,6 +15,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  pantry: [pantrySchema]
 });
 
 const User = mongoose.model('User', userSchema);

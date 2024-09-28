@@ -6,13 +6,14 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const session = require('express-session');
+const path = require('path');
 
 const authController = require('./controllers/auth.js');
 const foodsController = require('./controllers/foods.js');
 const isSignedIn = require('./middleware/is-signed-in.js');
 const passUserToView = require('./middleware/pass-user-to-view.js');
-
-const port = process.env.PORT ? process.env.PORT : '1450';
+const usersController = require('./controllers/users.js');
+const port = process.env.PORT ? process.env.PORT : '1451';
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -20,8 +21,12 @@ mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
+app.use('/users', usersController);
 // app.use(morgan('dev'));
 app.use(
   session({

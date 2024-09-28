@@ -8,10 +8,16 @@
 <body>
   <%- include('../partials/nav') %> 
   <h1>Welcome to my Pantry</h1>
-  <% if (pantry.length > 0) { %>
+  <% if (pantry && pantry.length > 0) { %>
     <ul>
       <% pantry.forEach(item => { %>
-        <li><%= item.name %> - <%= item.quantity %> - <%= item.expirationDate %></li>
+        <li>
+          <%= item.name %> - <%= item.quantity %> - <%= item.expirationDate %>
+          <form action="/users/<%= user._id %>/foods/<%= item._id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit">Delete</button>
+          </form>
+          <a href="/users/<%= user._id %>/foods/<%= item._id %>/edit">Edit</a>
+        </li>
       <% }) %>
     </ul>
   <% } else { %>
